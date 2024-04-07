@@ -1,0 +1,8 @@
+{
+  "deploy": {
+    "project": "5cc5d06d-90c1-40d3-8103-7e09ff8ddd74",
+    "exclude": ["**/node_modules"],
+    "include": [],
+    "entrypoint": "https://deno.land/std@0.220.0/http/file_server.ts"
+  }
+}
