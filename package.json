@@ -4,8 +4,12 @@
   "type": "module",
   "description": "Simplifying my site",
   "main": "Program.fs.js",
+  "scripts": {
+    "echo": "echo 'hey'"
+  },
   "devDependencies": {
-    "@types/bun": "latest"
+    "@types/bun": "latest",
+    "vite": "^5.2.8"
   },
   "peerDependencies": {
     "typescript": "^5.0.0"

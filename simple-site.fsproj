@@ -9,6 +9,7 @@
     <Compile Include="Browser.fs" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Fable.Browser.Dom" Version="2.16.0" />
     <PackageReference Include="Fable.Core" Version="4.3.0" />
     <PackageReference Include="Fable.Node" Version="1.2.0" />
   </ItemGroup>
