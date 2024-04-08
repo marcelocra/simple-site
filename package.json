@@ -1,0 +1,16 @@
+{
+  "name": "simple-site",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Simplifying my site",
+  "main": "Program.fs.js",
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "keywords": [],
+  "author": "Marcelo Almeida",
+  "license": "MIT"
+}
