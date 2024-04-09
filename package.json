@@ -5,7 +5,7 @@
   "description": "Simplifying my site",
   "main": "Program.fs.js",
   "scripts": {
-    "echo": "echo 'hey'"
+    "w": "dotnet fable watch --verbose --run npx vite"
   },
   "devDependencies": {
     "@types/bun": "latest",
