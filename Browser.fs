@@ -1,58 +1,32 @@
-﻿module Browser
+﻿open Elmish
+open Fable.Core
+open System
+open Feliz
 
-open Fable.Elmish
 
-open Elmish
+module BasicTimer =
 
-module Counter =
-    type Model = { count: int }
-    let init () = { count = 0 }, Cmd.none // no initial command
+    type Model = { current: DateTime }
 
-    type Msg =
-        | Increment
-        | Decrement
+    type Msg = Tick of DateTime
+
+    let init () = { current = DateTime.MinValue }, []
 
     let update msg model =
         match msg with
-        | Increment -> { model with count = model.count + 1 }, Cmd.none
-        | Decrement -> { model with count = model.count - 1 }, Cmd.none
+        | Tick current -> { model with current = current }, []
 
-type Model =
-    { top: Counter.Model
-      bottom: Counter.Model }
+    let timer onTick =
+        let start dispatch =
+            let intervalId = JS.setInterval (fun _ -> dispatch (onTick DateTime.Now)) 1000
 
-type Msg =
-    | Reset
-    | Top of Counter.Msg
-    | Bottom of Counter.Msg
+            { new IDisposable with
+                member _.Dispose() = JS.clearInterval intervalId }
 
-let init () =
-    let top, topCmd = Counter.init ()
-    let bottom, bottomCmd = Counter.init ()
+        start
 
-    { top = top; bottom = bottom }, Cmd.batch [ Cmd.map Top topCmd; Cmd.map Bottom bottomCmd ]
+    let subscribe model = [ [ "timer" ], timer Tick ]
 
-let update msg model : Model * Cmd<Msg> =
-    match msg with
-    | Reset ->
-        let top, topCmd = Counter.init ()
-        let bottom, bottomCmd = Counter.init ()
-
-        { top = top; bottom = bottom }, Cmd.batch [ Cmd.map Top topCmd; Cmd.map Bottom bottomCmd ]
-    | Top msg' ->
-        let res, cmd = Counter.update msg' model.top
-        { model with top = res }, Cmd.map Top cmd
-    | Bottom msg' ->
-        let res, cmd = Counter.update msg' model.bottom
-        { model with bottom = res }, Cmd.map Bottom cmd
-
-let view (model: Model) dispatch =
-    div
-        []
-        [ h1 [] [ str "Counter" ]
-          div [] [ Counter.view model.top (fun msg -> dispatch (Top msg)) ]
-          div [] [ Counter.view model.bottom (fun msg -> dispatch (Bottom msg)) ]
-          button [ onClick (fun _ -> dispatch Reset) ] [ str "Reset" ] ]
-
-Program.mkProgram init update (fun model _ -> printf "%A\n" model)
-|> Program.run
+    Program.mkProgram init update (fun model _ -> printf "%A\n" model)
+    |> Program.withSubscription subscribe
+    |> Program.run
